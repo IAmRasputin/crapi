@@ -15,16 +15,16 @@
 (defun load-spec (in)
   "load a JSON spec from a json string or stream, and return it as a hash-map for further processing"
   (let ((spec (json:parse in)))
-    (when (validate-spec in)
-      (error "Invalid JSON spec"))))
+    (validate-spec spec)))
 
 (defun validate-spec (spec)
   (and
    (validate-spec-version spec)
    ;; ...
-   ))
+   spec))
 
 (defun validate-spec-version (spec)
+  (assert (typep spec 'hash-table))
   (let ((swagger-version (gethash "swagger" spec))
         (openapi-version (gethash "openapi" spec)))
     (cond
